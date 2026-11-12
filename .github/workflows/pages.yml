@@ -30,7 +30,7 @@ jobs:
       - name: Validate and prepare site
         env:
           PAGES_BASE_URL: ${{ steps.pages.outputs.base_url }}
-        run: python3 scripts/build-pages.py --base-url "$PAGES_BASE_URL/"
+        run: python3 scripts/build-pages.py --base-url "${PAGES_BASE_URL/#http:/https:}/"
       - name: Upload site
         uses: actions/upload-pages-artifact@v4
         with:

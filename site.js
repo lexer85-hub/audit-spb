@@ -91,6 +91,7 @@ if (menuButton && navigation) {
       }
     });
   }
+  const header = document.querySelector('.site-header');
   const progress = document.querySelector('.reading-progress');
   const topButton = document.querySelector('.scroll-top');
   const sections = [...document.querySelectorAll('main > section')];
@@ -99,6 +100,10 @@ if (menuButton && navigation) {
   function update() {
     pending = false;
     const offset = window.scrollY;
+    if (header) {
+      if (offset > 100) header.classList.add('is-compact');
+      else if (offset < 20) header.classList.remove('is-compact');
+    }
     const maximum = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
     if (progress) {
       progress.hidden = maximum === 0;

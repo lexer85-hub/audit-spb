@@ -8,6 +8,8 @@ import runpy
 ROOT = Path(__file__).resolve().parents[1]
 build_checks = runpy.run_path(str(ROOT / 'scripts/build-pages.py'))
 Page = build_checks['Page']
+build_checks['validate_verification_files'](ROOT)
+verification_paths = {ROOT / name for name in build_checks['VERIFICATION_FILES']}
 
 pages = {p.resolve(): Page(p) for p in [*ROOT.glob('*.html'), *ROOT.glob('blog/*.html')]}
 errors = []
@@ -39,8 +41,8 @@ assert 'mailto:stak@audit-spb.ru' in text and 'tel:+79112158515' in text
 schema = build_checks['validate_homepage'](ROOT, 'https://audit-spb.ru/', pages)
 assert schema['telephone'] == '+79112158515'
 for page in pages.values():
-    if page.path.name != 'index.html':
+    if page.path.name != 'index.html' and page.path not in verification_paths:
         assert any(tag == 'meta' and data.get('name') == 'robots' and 'noindex' in data['content'] for tag,data in page.tags)
 if errors:
     raise SystemExit('\n'.join(errors))
-print(f'PASS: {len(pages)} HTML pages; {reference_count} references; anchors; image attributes; SEO metadata; JSON-LD catalog; indexability; sitemap dates; redirect noindex; no legacy dependencies.')
+print(f'PASS: {len(pages)} HTML pages; {reference_count} references; anchors; image attributes; SEO metadata; JSON-LD catalog; indexability; sitemap dates; redirect noindex; ownership verification files; no legacy dependencies.')

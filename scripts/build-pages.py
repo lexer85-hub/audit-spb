@@ -18,6 +18,15 @@ from zoneinfo import ZoneInfo
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE_URL = 'https://audit-spb.ru/'
 DEFAULT_URL = 'https://lexer85-hub.github.io/audit-spb/'
+VERIFICATION_FILES = {
+    'google55676c936f3df7f0.html': 'google-site-verification: google55676c936f3df7f0.html',
+    'yandex_543f725de89851ae.html': '''<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>Verification: 543f725de89851ae</body>
+</html>''',
+}
 
 
 class Page(HTMLParser):
@@ -67,6 +76,15 @@ class Page(HTMLParser):
 def require(condition, message):
     if not condition:
         raise ValueError(message)
+
+
+def validate_verification_files(directory):
+    # Provider-issued verification files are not content pages or redirects.
+    for filename, expected in VERIFICATION_FILES.items():
+        path = directory / filename
+        require(path.is_file(), f'Missing ownership verification file: {filename}')
+        require(path.read_text(encoding='utf-8').strip() == expected,
+                f'Changed ownership verification content: {filename}')
 
 
 def validate_homepage(directory, base_url, pages):
@@ -167,9 +185,12 @@ def validate_homepage(directory, base_url, pages):
 
 def validate_site(directory, base_url):
     pages = {p: Page(p) for p in directory.rglob('*.html')}
+    validate_verification_files(directory)
     base = urlsplit(base_url)
     references = 0
     for path, page in pages.items():
+        if path.parent == directory and path.name in VERIFICATION_FILES:
+            continue
         page_url = base_url + quote(path.relative_to(directory).as_posix())
         canonical = [data.get('href') for tag, data in page.tags
                      if tag == 'link' and data.get('rel') == 'canonical']
@@ -219,7 +240,9 @@ def main():
             require(source.is_relative_to(ROOT) and source.is_file(), f'Missing source: {filename}')
             target = staging / relative
             target.parent.mkdir(parents=True, exist_ok=True)
-            if source.suffix in ('.html', '.xml', '.txt'):
+            if filename in VERIFICATION_FILES:
+                shutil.copyfile(source, target)
+            elif source.suffix in ('.html', '.xml', '.txt'):
                 content = source.read_text(encoding='utf-8').replace(SOURCE_URL, base_url)
                 require(base_url == SOURCE_URL or SOURCE_URL not in content,
                         f'Old domain remains in {filename}')

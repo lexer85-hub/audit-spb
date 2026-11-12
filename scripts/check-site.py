@@ -1,31 +1,13 @@
 #!/usr/bin/env python3
 """Check static release references and markup with the Python standard library."""
 from collections import Counter
-from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urlsplit, unquote
-import json
-import re
-import xml.etree.ElementTree as ET
+import runpy
 
 ROOT = Path(__file__).resolve().parents[1]
-class Page(HTMLParser):
-    def __init__(self, path):
-        super().__init__(convert_charrefs=True)
-        self.path = path
-        self.ids, self.refs, self.images, self.tags = [], [], [], []
-        self.feed(path.read_text())
-    def handle_starttag(self, tag, attrs):
-        data = dict(attrs)
-        self.tags.append((tag, data))
-        if 'id' in data: self.ids.append(data['id'])
-        for attr in ('src', 'href'):
-            if data.get(attr): self.refs.append(data[attr])
-        if data.get('srcset'):
-            self.refs.extend(x.strip().split()[0] for x in data['srcset'].split(','))
-        if tag == 'meta' and data.get('http-equiv') == 'refresh':
-            self.refs.append(data['content'].split('url=', 1)[1])
-        if tag == 'img': self.images.append(data)
+build_checks = runpy.run_path(str(ROOT / 'scripts/build-pages.py'))
+Page = build_checks['Page']
 
 pages = {p.resolve(): Page(p) for p in [*ROOT.glob('*.html'), *ROOT.glob('blog/*.html')]}
 errors = []
@@ -54,15 +36,11 @@ assert len(maps) == 1 and urlsplit(maps[0]['src']).hostname == 'yandex.ru', 'Exp
 assert maps[0].get('loading') == 'lazy' and maps[0].get('title'), 'Map needs lazy loading and an accessible title'
 assert 'maps.google.com' not in text, 'Old Google map must be removed'
 assert 'mailto:stak@audit-spb.ru' in text and 'tel:+79112158515' in text
-schema = json.loads(re.search(r'<script type="application/ld\+json">(.*?)</script>', text, re.S)[1])
-assert schema['url'] == 'https://audit-spb.ru/'
+schema = build_checks['validate_homepage'](ROOT, 'https://audit-spb.ru/', pages)
 assert schema['telephone'] == '+79112158515'
-for value in (schema['logo'], *[data['content'] for tag, data in main.tags if tag == 'meta' and data.get('property') == 'og:image']):
-    assert (ROOT / urlsplit(value).path.lstrip('/')).is_file(), f'Missing social image: {value}'
 for page in pages.values():
     if page.path.name != 'index.html':
         assert any(tag == 'meta' and data.get('name') == 'robots' and 'noindex' in data['content'] for tag,data in page.tags)
-ET.parse(ROOT / 'sitemap.xml')
 if errors:
     raise SystemExit('\n'.join(errors))
-print(f'PASS: {len(pages)} HTML pages; {reference_count} references; anchors; image attributes; JSON-LD; sitemap; redirect noindex; no legacy dependencies.')
+print(f'PASS: {len(pages)} HTML pages; {reference_count} references; anchors; image attributes; SEO metadata; JSON-LD catalog; indexability; sitemap dates; redirect noindex; no legacy dependencies.')

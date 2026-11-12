@@ -94,6 +94,7 @@ if (menuButton && navigation) {
   const header = document.querySelector('.site-header');
   const progress = document.querySelector('.reading-progress');
   const topButton = document.querySelector('.scroll-top');
+  if (topButton) topButton.hidden = false;
   const sections = [...document.querySelectorAll('main > section')];
   const navLinks = [...document.querySelectorAll('#navigation a')];
   let pending = false;
@@ -109,7 +110,6 @@ if (menuButton && navigation) {
       progress.hidden = maximum === 0;
       progress.firstElementChild.style.transform = `scaleX(${maximum ? Math.min(1, offset / maximum) : 0})`;
     }
-    if (topButton) topButton.hidden = offset < 700 || !document.querySelector('#consent-banner').hidden;
     const current = sections.filter(e => e.getBoundingClientRect().top <= window.innerHeight * .35).at(-1);
     let target = null;
     if (current?.id === 'sec-69fc') target = '#sec-69fc';

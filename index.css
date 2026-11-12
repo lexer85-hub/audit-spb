@@ -82,27 +82,27 @@ li + li { margin-top: 10px; }
 .price { margin-block: 28px; padding: 20px 0; border-block: 1px solid #686868; }
 .price strong { font-size: 1.4rem; white-space: nowrap; }
 .price span { display: block; color: var(--muted); font-size: .95rem; }
-.contacts { background: #385c7b; }
+.contacts { background: var(--background); }
 .contacts h2 { text-align: center; }
 .contacts-layout { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.25fr); gap: 28px; align-items: stretch; margin-top: 40px; }
-.contact-card { min-width: 0; padding: 36px; background: #1f374c; }
+.contact-card { min-width: 0; padding: 36px; background: #2a2a2a; }
 .contact-address { font-size: clamp(1.5rem, 2.5vw, 2rem); }
-.contact-city { color: #d7e5f0; margin-top: 12px; }
-.metro-access { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; align-items: center; gap: 12px; margin-top: 28px; padding-block: 20px; border-block: 1px solid #62829d; }
+.contact-city { color: var(--muted); margin-top: 12px; }
+.metro-access { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; align-items: center; gap: 12px; margin-top: 28px; padding-block: 20px; border-block: 1px solid #555; }
 .metro-symbol { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: #c8343a; color: white; font-size: 1rem; font-weight: 700; }
 .metro-access strong { display: block; font-size: 1.125rem; }
-.metro-access div > span { display: block; color: #d7e5f0; font-size: .875rem; }
+.metro-access div > span { display: block; color: var(--muted); font-size: .875rem; }
 .metro-time { white-space: nowrap; font-size: 1.25rem; font-weight: 700; }
 .walking-route { display: inline-block; padding-block: 12px; font-size: .9375rem; }
 .contact-details { display: grid; gap: 24px; margin-top: 20px; }
-.contact-details h3 { text-transform: uppercase; letter-spacing: .06em; font-size: .8125rem; color: #d7e5f0; margin-bottom: 6px; }
+.contact-details h3 { text-transform: uppercase; letter-spacing: .06em; font-size: .8125rem; color: var(--muted); margin-bottom: 6px; }
 .contact-details p { font-size: 1.125rem; overflow-wrap: anywhere; }
 .contact-details a { display: inline-flex; align-items: center; min-height: 44px; padding-block: 4px; }
-.contact-note { color: #d7e5f0; font-size: 1rem; }
-.map-panel { display: flex; flex-direction: column; min-width: 0; background: #1a2e40; }
+.contact-note { color: var(--muted); font-size: 1rem; }
+.map-panel { display: flex; flex-direction: column; min-width: 0; background: #2a2a2a; }
 .map-heading { padding: 22px 24px; }
 .map-heading strong, .map-heading span { display: block; }
-.map-heading span { margin-top: 4px; color: #d7e5f0; font-size: .875rem; }
+.map-heading span { margin-top: 4px; color: var(--muted); font-size: .875rem; }
 .yandex-map { display: block; flex: 1; width: 100%; min-height: 440px; border: 0; background: #e8e8e8; color-scheme: light; }
 .map-directions { display: block; padding: 16px 24px; font-size: .9375rem; }
 .site-footer { padding-block: 32px; font-size: .875rem; color: var(--muted); }

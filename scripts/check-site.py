@@ -49,7 +49,10 @@ main = pages[(ROOT / 'index.html').resolve()]
 assert sum(tag == 'h1' for tag, _ in main.tags) == 1, 'Exactly one h1 required'
 text = (ROOT / 'index.html').read_text()
 assert all(value not in text for value in ('nicepage.js', 'jquery.js', 'nicepage.css', 'fonts.googleapis.com'))
-assert not any(tag == 'iframe' for tag, _ in main.tags), 'Map should load only on request'
+maps = [data for tag, data in main.tags if tag == 'iframe']
+assert len(maps) == 1 and urlsplit(maps[0]['src']).hostname == 'yandex.ru', 'Expected a Yandex map'
+assert maps[0].get('loading') == 'lazy' and maps[0].get('title'), 'Map needs lazy loading and an accessible title'
+assert 'maps.google.com' not in text, 'Old Google map must be removed'
 assert 'mailto:stak@audit-spb.ru' in text and 'tel:+79112158515' in text
 schema = json.loads(re.search(r'<script type="application/ld\+json">(.*?)</script>', text, re.S)[1])
 assert schema['url'] == 'https://audit-spb.ru/'

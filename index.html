@@ -16,8 +16,8 @@
   <meta property="og:image" content="https://audit-spb.ru/images/optimized/hero-social-1200.jpg">
   <meta property="og:image:alt" content="Разведенный Дворцовый мост в Санкт-Петербурге">
   <link rel="icon" type="image/png" href="images/optimized/favicon-64.png">
-  <link rel="stylesheet" href="index.css?v=20261112">
-  <script src="site.js?v=20261112" defer></script>
+  <link rel="stylesheet" href="index.css?v=20261112-contacts">
+  <script src="site.js?v=20261112-contacts" defer></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -155,21 +155,30 @@
     </section>
     <section class="section contacts" id="sec-a2cb" aria-labelledby="contacts-title">
       <div class="container">
-        <h2 id="contacts-title">Контакты</h2>
-        <div class="contact-grid">
-          <div><h3>Телефон</h3><p><a href="tel:+79112158515">+7 (911) 215-85-15</a></p></div>
-          <div><h3>Адрес</h3><p>Санкт-Петербург, ул. Комиссара Смирнова, д. 15, офис 234</p></div>
-          <div><h3>Электронная почта</h3><p><a href="mailto:stak@audit-spb.ru">stak@audit-spb.ru</a></p></div>
-          <div><h3>Часы работы</h3><p>По будням с 10:00 до 18:00</p></div>
+        <h2 id="contacts-title">Как нас найти</h2>
+        <div class="contacts-layout">
+          <div class="contact-card">
+            <h3 class="contact-address">ул. Комиссара Смирнова, 15</h3>
+            <p class="contact-city">Санкт-Петербург · офис 234</p>
+            <div class="metro-access" aria-label="Пешком от метро">
+              <span class="metro-symbol" aria-hidden="true">М</span>
+              <div><strong>Выборгская</strong><span>пешком до здания · 1,27 км</span></div>
+              <span class="metro-time">≈ 16 мин</span>
+            </div>
+            <a class="walking-route" href="https://yandex.ru/maps/2/saint-petersburg/?mode=routes&amp;rtext=59.971006%2C30.347309~59.963052%2C30.348378&amp;rtt=pd" target="_blank" rel="noopener noreferrer">Пеший маршрут от метро <span aria-hidden="true">↗</span></a>
+            <div class="contact-details">
+              <div><h3>Телефон</h3><p><a href="tel:+79112158515">+7 (911) 215-85-15</a></p></div>
+              <div><h3>Электронная почта</h3><p><a href="mailto:stak@audit-spb.ru">stak@audit-spb.ru</a></p></div>
+              <div><h3>Часы работы</h3><p>Пн–Пт: 10:00–18:00<br><span class="contact-note">Сб–Вс: выходные</span></p></div>
+            </div>
+          </div>
+          <div class="map-panel" id="sec-88bb">
+            <div class="map-heading"><strong>СтАК — СтильАктивКонсалт</strong><span>ул. Комиссара Смирнова, 15 · офис 234</span></div>
+            <iframe class="yandex-map" src="https://yandex.ru/map-widget/v1/?ll=30.348378%2C59.963052&amp;z=16&amp;pt=30.348378%2C59.963052%2Cpm2rdm" title="СтАК на Яндекс Картах: Санкт-Петербург, улица Комиссара Смирнова, 15" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            <a class="map-directions" href="https://yandex.ru/maps/?ll=30.348378%2C59.963052&amp;z=16&amp;pt=30.348378%2C59.963052%2Cpm2rdm" target="_blank" rel="noopener noreferrer">Открыть в Яндекс Картах <span aria-hidden="true">↗</span></a>
+          </div>
         </div>
       </div>
-    </section>
-    <section class="map" id="sec-88bb" aria-label="Расположение офиса">
-      <div id="map-placeholder" class="map-placeholder">
-        <p>Санкт-Петербург<br><strong>ул. Комиссара Смирнова, 15</strong></p>
-        <button class="button" id="load-map" type="button" hidden data-src="https://maps.google.com/maps?output=embed&amp;q=Санкт-Петербург,+улица+Комиссара+Смирнова,+15&amp;z=16&amp;t=m">Показать карту Google</button>
-      </div>
-      <p class="map-directions"><a href="https://yandex.ru/maps/?text=Санкт-Петербург%2C%20улица%20Комиссара%20Смирнова%2C%2015" target="_blank" rel="noopener noreferrer">Открыть адрес в Яндекс Картах <span aria-hidden="true">↗</span></a></p>
     </section>
   </main>
   <footer class="site-footer" id="sec-f9e6">

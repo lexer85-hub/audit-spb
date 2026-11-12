@@ -73,22 +73,34 @@ li + li { margin-top: 10px; }
 .price span { display: block; color: var(--muted); font-size: .95rem; }
 .contacts { background: #385c7b; }
 .contacts h2 { text-align: center; }
-.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px 64px; max-width: 950px; margin: 40px auto 0; }
-.contact-grid h3 { text-transform: uppercase; letter-spacing: .06em; font-size: 1rem; margin-bottom: 12px; }
-.contact-grid p { font-size: 1.125rem; overflow-wrap: anywhere; }
-.contact-grid a { display: inline-block; padding-block: 4px; }
-.map { background: #252d34; }
-.map-placeholder { min-height: 360px; padding: 40px 24px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 22px; text-align: center; }
-.map-placeholder p { font-size: 1.25rem; }
-.map-directions { margin: 0; padding: 0 16px 28px; text-align: center; }
-.map iframe + .map-directions { padding-top: 24px; }
-.map iframe { display: block; width: 100%; height: 360px; border: 0; background: #ddd; }
+.contacts-layout { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.25fr); gap: 28px; align-items: stretch; margin-top: 40px; }
+.contact-card { padding: 36px; background: #1f374c; }
+.contact-address { font-size: clamp(1.5rem, 2.5vw, 2rem); }
+.contact-city { color: #d7e5f0; margin-top: 12px; }
+.metro-access { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; align-items: center; gap: 12px; margin-top: 28px; padding-block: 20px; border-block: 1px solid #62829d; }
+.metro-symbol { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: #c8343a; color: white; font-size: 1rem; font-weight: 700; }
+.metro-access strong { display: block; font-size: 1.125rem; }
+.metro-access div > span { display: block; color: #d7e5f0; font-size: .875rem; }
+.metro-time { white-space: nowrap; font-size: 1.25rem; font-weight: 700; }
+.walking-route { display: inline-block; padding-block: 12px; font-size: .9375rem; }
+.contact-details { display: grid; gap: 24px; margin-top: 20px; }
+.contact-details h3 { text-transform: uppercase; letter-spacing: .06em; font-size: .8125rem; color: #d7e5f0; margin-bottom: 6px; }
+.contact-details p { font-size: 1.125rem; overflow-wrap: anywhere; }
+.contact-details a { display: inline-block; padding-block: 4px; }
+.contact-note { color: #d7e5f0; font-size: 1rem; }
+.map-panel { display: flex; flex-direction: column; min-width: 0; background: #1a2e40; }
+.map-heading { padding: 22px 24px; }
+.map-heading strong, .map-heading span { display: block; }
+.map-heading span { margin-top: 4px; color: #d7e5f0; font-size: .875rem; }
+.yandex-map { display: block; flex: 1; width: 100%; min-height: 440px; border: 0; background: #e8e8e8; color-scheme: light; }
+.map-directions { display: block; padding: 16px 24px; font-size: .9375rem; }
 .site-footer { padding-block: 32px; font-size: .875rem; color: var(--muted); }
 .site-footer .container { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; }
 .site-footer p + p { margin: 0; }
 @media (min-width: 1600px) { .hero { min-height: 720px; } }
 @media (max-width: 800px) {
   .service-grid { grid-template-columns: 1fr; max-width: 650px; }
+  .contacts-layout { grid-template-columns: 1fr; }
   .gallery { grid-template-rows: repeat(2, 200px); }
   .header-inner { min-height: 112px; }
   .brand span { font-size: 2.5rem; }
@@ -116,17 +128,23 @@ li + li { margin-top: 10px; }
   .gallery img:first-child { grid-column: span 2; grid-row: auto; }
   .service-grid { gap: 24px; }
   .card-content { padding: 24px; }
-  .contact-grid { grid-template-columns: 1fr; gap: 28px; margin-top: 32px; }
+  .contacts-layout { gap: 20px; margin-top: 28px; }
+  .contact-card { padding: 24px; }
+  .metro-access { gap: 10px; }
+  .metro-time { font-size: 1.125rem; }
+  .yandex-map { min-height: 360px; }
   .site-footer .container { justify-content: center; text-align: center; }
 }
 @media print {
   :root { color-scheme: light; }
   body, .section, .contacts, .service-card { background: white; color: black; }
-  .hero-image, .gallery, .services-background, .map, .menu-toggle, #navigation, .skip-link, .actions, .service-links { display: none !important; }
+  .hero-image, .gallery, .services-background, .map-panel, .menu-toggle, #navigation, .skip-link, .actions, .service-links { display: none !important; }
   .hero::after, .services::after { display: none; }
   .hero { min-height: auto; padding-block: 24px; }
   .section { padding-block: 24px; }
-  .service-grid, .contact-grid { display: block; }
+  .service-grid, .contacts-layout { display: block; }
+  .contact-card { background: white; color: black; }
+  .contact-city, .contact-details h3, .contact-note, .metro-access div > span { color: black; }
   .service-card > img { display: none; }
   a, .site-footer, .price span { color: black; }
 }

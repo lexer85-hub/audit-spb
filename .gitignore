@@ -1,0 +1,25 @@
+# Local files and generated reports / archives
+.DS_Store
+__pycache__/
+*.py[cod]
+.env
+.env.*
+!.env.example
+/artifacts/
+
+# Original Nicepage export retained locally for reference
+/nicepage.css
+/nicepage.js
+/jquery.js
+/intlTelInput/
+/About.css
+/Contact.css
+/Blog-Template.css
+/Post-Template.css
+/blog/blog.json
+
+# Original images are retained locally; the live site uses optimized assets.
+/images/*
+!/images/logowhite.png
+!/images/optimized/
+/images/optimized/blog-*.webp

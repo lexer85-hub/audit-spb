@@ -27,43 +27,6 @@ if (menuButton && navigation) {
   narrowScreen.addEventListener('change', () => closeMenu());
 }
 
-// Preference collection only. Analytics counters will be connected separately.
-(() => {
-  const banner = document.querySelector('#consent-banner');
-  const openButton = document.querySelector('#consent-open');
-  if (!banner || !openButton) return;
-  const storageKey = 'stak.analytics-consent.v2';
-  const maxAge = 180 * 24 * 60 * 60 * 1000;
-  let saved = null;
-  try {
-    const value = JSON.parse(localStorage.getItem(storageKey));
-    if (value?.version === 2 && typeof value.allowed === 'boolean'
-      && Number.isFinite(value.savedAt) && Date.now() >= value.savedAt
-      && Date.now() - value.savedAt < maxAge) saved = value;
-  } catch { /* Default to no analytics when browser storage is unavailable. */ }
-
-  function announce() {
-    const consent = Object.freeze({ allowed: saved?.allowed === true });
-    window.stakAnalyticsConsent = consent;
-    window.dispatchEvent(new CustomEvent('stak:analytics-consent', { detail: consent }));
-  }
-  function save(allowed) {
-    saved = { version: 2, allowed, savedAt: Date.now() };
-    try { localStorage.setItem(storageKey, JSON.stringify(saved)); } catch { /* Current visit still works. */ }
-    banner.hidden = true;
-    announce();
-  }
-  banner.hidden = saved !== null;
-  openButton.hidden = false;
-  document.querySelector('#consent-accept').addEventListener('click', () => save(true));
-  document.querySelector('#consent-reject').addEventListener('click', () => save(false));
-  openButton.addEventListener('click', () => {
-    banner.hidden = false;
-    document.querySelector('#consent-accept').focus({ preventScroll: true });
-    window.dispatchEvent(new CustomEvent('stak:analytics-consent', { detail: window.stakAnalyticsConsent }));
-  });
-  announce();
-})();
 
 (() => {
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');

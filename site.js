@@ -76,7 +76,7 @@ if (menuButton && navigation) {
         }
       }
     }, { threshold: .05 });
-    document.querySelectorAll('.service-card, .about-copy, .about-photo, .contact-card, .map-panel').forEach((element) => {
+    document.querySelectorAll('.service-card:not(.reveal-from-left):not(.reveal-from-right), .about-copy, .about-photo, .contact-card, .map-panel').forEach((element) => {
       element.classList.add('reveal-pending');
       observer.observe(element);
     });
@@ -92,6 +92,10 @@ if (menuButton && navigation) {
     });
   }
   const header = document.querySelector('.site-header');
+  const slidingCards = [...document.querySelectorAll('.reveal-from-left, .reveal-from-right')].map(element => {
+    element.classList.add('reveal-scroll');
+    return { element, direction: element.classList.contains('reveal-from-left') ? -1 : 1, progress: null };
+  });
   const progress = document.querySelector('.reading-progress');
   const topButton = document.querySelector('.scroll-top');
   const sections = [...document.querySelectorAll('main > section')];
@@ -103,6 +107,22 @@ if (menuButton && navigation) {
     if (header) {
       if (offset > 100) header.classList.add('is-compact');
       else if (offset < 20) header.classList.remove('is-compact');
+    }
+    // Use each card's vertical position, so long mobile cards stay readable.
+    // The same progress runs backwards when the scroll direction changes.
+    const viewportTop = header?.getBoundingClientRect().bottom ?? 0;
+    const revealDistance = Math.min(160, Math.max(1, (window.innerHeight - viewportTop) * .2));
+    for (const card of slidingCards) {
+      const bounds = card.element.getBoundingClientRect();
+      const amount = reducedMotion.matches ? 1 : Math.max(0, Math.min(1,
+        (window.innerHeight - bounds.top) / revealDistance,
+        (bounds.bottom - viewportTop) / revealDistance));
+      const progress = Number((amount * amount * (3 - 2 * amount)).toFixed(3));
+      if (progress !== card.progress) {
+        card.element.style.setProperty('--reveal-progress', progress);
+        card.element.style.setProperty('--reveal-shift', `${card.direction * 64 * (1 - progress)}px`);
+        card.progress = progress;
+      }
     }
     const maximum = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
     if (progress) {
@@ -123,6 +143,7 @@ if (menuButton && navigation) {
   function schedule() { if (!pending) { pending = true; requestAnimationFrame(update); } }
   window.addEventListener('scroll', schedule, { passive: true });
   window.addEventListener('resize', schedule, { passive: true });
+  reducedMotion.addEventListener('change', schedule);
   window.addEventListener('stak:analytics-consent', schedule);
   topButton?.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: reducedMotion.matches ? 'auto' : 'smooth' });
